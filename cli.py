@@ -15,7 +15,9 @@ def cli(ctx, host, port):
     ctx.obj = {'address': f'http://{host}:{port}'}
 
 
-@cli.command(name='images')
+@cli.command(
+    name='images',
+    help='Get list of images in storage')
 @click.pass_context
 def images(ctx):
     r = httpx.get(f"{ctx.obj['address']}/images")
@@ -23,7 +25,9 @@ def images(ctx):
         print(f'image [{i}]: {Image(**data)}')
 
 
-@cli.command(name='upload')
+@cli.command(
+    name='upload',
+    help='Upload image to storage with tags')
 @click.option('--file', '-f', default=None)
 @click.option('--tags', '-t', default=None, multiple=True)
 @click.pass_context
@@ -45,7 +49,9 @@ def upload_image(ctx, file, tags):
     print(r.json())
 
 
-@cli.command(name='get')
+@cli.command(
+    name='get',
+    help='Download image from storage to host by id')
 @click.option('--image_id', '-id', default=None)
 @click.option('--output', '-o', default='./')
 @click.pass_context
@@ -61,7 +67,9 @@ def get_image(ctx, image_id, output):
     image.save(file_name, image.format)
 
 
-@cli.command(name='tagged_images')
+@cli.command(
+    name='tagged_images',
+    help='Get list of images filtered by tags')
 @click.option('--tags', '-t', default=None, multiple=True)
 @click.pass_context
 def get_images_by_tags(ctx, tags):
